@@ -1,0 +1,99 @@
+(OK)1. INSTALLATION :
+    Telecharger : https://github.com/datacharmer/test_db
+    Extraire dans htdocs/test_db-master/
+    Lancer dans le terminal :
+    cd /opt/lampp/htdocs/test_db-master
+    sudo /opt/lampp/bin/mysql -u root -p < employees.sql
+    sudo /opt/lampp/bin/mysql -u root -p
+    show databases;
+    use employees;
+    select * from departments;
+
+
+(OK)2. STRUCTURER LES DOSSIERS :
+    Creer dans htdocs/test_db-master/ :
+test_db-master/
+├── Assets/ : images et style.css
+├── includes/ : connexion.php, deconnexion.php,fonctions.php
+├── PAGES/ :bootstrap + index.php, employes.php
+├── SQL/ : employees.sql et tous les autres.sql
+
+
+ 3. INCLUDES:
+   (4352) connexion.php : connexion a la base de donnees
+
+   (4212) deconnexion.php : session_destroy + redirection
+
+   fonctions.php:
+    (4212)- getDepartementsAvecManager() : recuperer les departements et leurs managers actuels
+    (4352) - getEmployesParDepartement($dept_no) : lister les employes dun departement
+    (4212)- getCurrentDepartement($emp_no) : obtenir le departement actuel d un employe
+    (4352) - getCurrentManager($dept_no) : obtenir le manager actuel d un departement
+    (4352) - fonction : valider l'existence d'un employe ou d'un departement
+
+ 4. PAGES
+    (4352) index.php:
+        -Lister tous les departements avec getDepartementsAvecManager()
+        -Afficher le nom du manager actuel pour chaque departement
+        -Ajouter un bouton "Voir" par departement redirigeant vers employes.php?dept=xxx
+        -Ajouter un lien vers recherche.php pour rechercher des employes
+        -Ajouter un lien vers stats_emploi.php pour afficher les statistiques
+
+    (4212)employes.php:
+        -Recuperer tous les employes du departement specifie via getEmployesParDepartement
+        -Afficher un tableau avec les colonnes : Nom, Sexe, Date de naissance
+        -Chaque nom est un lien vers fiche_employe.php
+        -Ajouter un bouton "Retour" vers index.php
+        -Ajouter un lien vers recherche.php pour rechercher des employes
+        -Ajouter un lien vers stats_emploi.php pour afficher les statistiques
+
+   (4352)  fiche_employe.php:
+        -Recuperer les informations de l'employe via emp_no
+        - les details : Nom, Sexe, Date de naissance, Date d'embauche, Departement actuel
+        - l'historique des salaires
+        - l'historique des postes
+        - le poste le plus long avec sa duree.
+        -un lien pour changer de departement (changer_dept.php)
+        -un lien pour devenir manager (devenir_manager.php) si l'employe est dans un departement
+        -un bouton "Retour" vers employes.php
+        -un lien vers recherche.php
+
+   (4212) changer_dept.php:
+        -Afficher le departement actuel de l'employe
+        -Proposer un formulaire pour selectionner un nouveau departement et une date de debut
+        -Valider que le nouveau departement est different de l'actuel
+        -Valider que la date de debut est posterieure a la date actuelle du departement
+        -Mettre a jour dept_emp en fermant l'enregistrement actuel et en ajoutant le nouveau
+        -Afficher un message de succes ou d'erreur
+        -Ajouter des boutons "Retour" vers fiche_employe.php et index.php
+
+   (4352)  devenir_manager.php:
+        -Afficher le manager actuel du departement 
+        -Proposer un formulaire pour definir la date de debut du nouveau manager
+        -Valider que la date de debut est posterieure a celle du manager actuel
+        -Mettre a jour dept_manager en fermant l'enregistrement actuel et en ajoutant le nouveau
+        -Afficher un message de succes ou d'erreur
+        -Ajouter des boutons "Retour" vers fiche_employe.php et index.php.
+
+    (4212)recherche.php:
+        -Creer un formulaire pour rechercher par nom, departement, age min/max.
+        -Pre-remplir les champs avec les valeurs precedentes (si existantes).
+        -Afficher la liste des departements dans le menu deroulant.
+        -Ajouter un bouton "Retour" vers index.php.
+
+   (4352)  resultats_recherche.php:
+        -Construire une requête SQL dynamique basee sur les criteres (nom, departement, age)
+        -Afficher les criteres de recherche pour debogage
+        -Afficher les resultats dans un tableau : Nom, Sexe, Date de naissance, age
+        -Ajouter un lien par employe vers fiche_employe.php
+        -Implementer une pagination (limite de 20 resultats par page)
+        -Afficher un message si aucun resultat ou erreur
+        -Ajouter un lien vers recherche.php pour une nouvelle recherche
+        -Ajouter un bouton "Retour" vers index.php
+
+   (4212) stats_emploi.php:
+        -Afficher un tableau avec : Poste, Nombre d'hommes, Nombre de femmes, Salaire moyen
+        -Ajouter un bouton "Retour" vers index.php
+
+ (OK)5. STYLE:
+    -4212 et 4352 
